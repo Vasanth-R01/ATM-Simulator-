@@ -1,0 +1,73 @@
+class ATM:
+    def __init__(self, account_holder, balance=0):
+        self.account_holder = account_holder
+        self.balance = balance
+
+    def deposit(self, amount):
+        """Method to deposit money into the account"""
+        if amount > 0:
+            self.balance += amount
+            print(f"Deposited ${amount}. New balance: ${self.balance}")
+        else:
+            print("Deposit amount must be greater than zero.")
+
+    def withdraw(self, amount):
+        """Method to withdraw money from the account"""
+        if amount > 0:
+            if amount <= self.balance:
+                self.balance -= amount
+                print(f"Withdrew ${amount}. New balance: ${self.balance}")
+            else:
+                print("Insufficient funds.")
+        else:
+            print("Withdrawal amount must be greater than zero.")
+
+    def check_balance(self):
+        """Method to check the current balance"""
+        print(f"Current balance: ${self.balance}")
+
+
+class ATMSystem:
+    def __init__(self):
+        self.users = {}
+    
+    def authenticate(self):
+        """Authenticate the user by their name"""
+        name = input("Enter your name: ")
+        if name not in self.users:
+            print("No account found. Creating a new account...")
+            initial_balance = float(input("Enter initial balance: $"))
+            self.users[name] = ATM(name, initial_balance)
+        return self.users[name]
+    
+    def menu(self):
+        """Display menu and prompt the user to perform actions"""
+        user = self.authenticate()
+        
+        while True:
+            print("\n--- ATM Menu ---")
+            print("1. Deposit")
+            print("2. Withdraw")
+            print("3. Check Balance")
+            print("4. Exit")
+            
+            choice = input("Choose an option: ")
+            
+            if choice == "1":
+                amount = float(input("Enter amount to deposit: $"))
+                user.deposit(amount)
+            elif choice == "2":
+                amount = float(input("Enter amount to withdraw: $"))
+                user.withdraw(amount)
+            elif choice == "3":
+                user.check_balance()
+            elif choice == "4":
+                print("Thank you for using the ATM!")
+                break
+            else:
+                print("Invalid choice, please try again.")
+
+
+if __name__ == "__main__":
+    atm_system = ATMSystem()
+    atm_system.menu()
